@@ -1,0 +1,5 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="action_sheet_height">42.6dp</dimen>
+
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray">#808080</color>
+    <color name="red">#FF0000</color>
+    <color name="gold">#FFD700</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="green">#008000</color>
+    <color name="blue">#0000FF</color>
+    <color name="purple">#800080</color>
+    <color name="pink">#FFC0CB</color>
+    <color name="orange">#FFA500</color>
+    <color name="vermilion">#FF3300</color>
+    <color name="lemonyellow">#FFFACD</color>
+    <color name="graywhite">#F5F5F5</color>
+    <color name="grayslate">#708090</color>
+    <color name="lightblue">#0083FF</color>
+    <color name="azure">#0789da</color>
+    <color name="saturated_grey">#8F8F8F</color>
+    <color name="lightblack">#ff202020</color>
+    <color name="full_transparent">#00000000</color>
+    <color name="half_transparent">#aa000000</color>
+    <color name="transparent_blank_75">#c0000000</color>
+    <color name="transparent_blank_50">#7f000000</color>
+    <color name="transparent_blank_25">#40000000</color>
+    <color name="category_title">#1086aa</color>
+    <color name="grayblack">#d4d4d4</color>
+
+    <color name="echoleaf_light">#EEEEEE</color>
+    <color name="echoleaf_dark">#313131</color>
+    <color name="echoleaf_gray">#959595</color>
+
+
+    <color name="stub_text_dark">#313131</color>
+    <color name="stub_text_gray">#959595</color>
+    <color name="stub_disable">#DDDDDD</color>
+    <color name="stub_selected">#e7e7e7</color>
+    <color name="stub_link">#e2b78b</color>
+    <color name="stub_header_bg">#313131</color>
+    <color name="stub_code_text">#f1f1f1</color>
+
+    <color name="stub_dark">#313131</color>
+    <color name="stub_gray">#959595</color>
+    <color name="stub_silver">#d2d2d2</color>
+    <color name="stub_light">#EEEEEE</color>
+    <color name="stub_write">#f1f1f1</color>
+    <color name="stub_gold">#e2b78b</color>
+    <color name="stub_pink">#f9f0e6</color>
+</resources>
