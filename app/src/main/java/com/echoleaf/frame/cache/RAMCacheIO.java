@@ -73,19 +73,14 @@ public class RAMCacheIO<T, V> implements ICacheIO<T, V> {
     }
 
     @Override
-    public int size(Context context) {
-        return map.size();
+    public boolean clear(Context context) {
+        map.clear();
+        return true;
     }
 
     @Override
-    public long byteSize(Context context) {
-        byte[] bytes = ByteUtils.toByteArray(map);
-        return bytes == null ? 0L : bytes.length;
-    }
-
-    public boolean clear() {
-        if (map == null)
-            return false;
+    public boolean sortOut(Context context) {
+        long be = byteSize(context);
         ArrayList<CacheObejct<V>> objects = new ArrayList<>();
         objects.addAll(map.values());
         for (CacheObejct<V> cacheObejct : objects) {
@@ -94,12 +89,13 @@ public class RAMCacheIO<T, V> implements ICacheIO<T, V> {
             }
         }
         objects.clear();
-        return false;
+        long af = byteSize(context);
+        return be > af;
     }
 
-    public boolean clear(long shelfLife) {
-        if (map == null)
-            return false;
+    @Override
+    public boolean sortOut(Context context, long shelfLife) {
+        long be = byteSize(context);
         ArrayList<CacheObejct<V>> objects = new ArrayList<>();
         objects.addAll(map.values());
         for (CacheObejct<V> cacheObejct : objects) {
@@ -111,13 +107,20 @@ public class RAMCacheIO<T, V> implements ICacheIO<T, V> {
             }
         }
         objects.clear();
-        return true;
+        long af = byteSize(context);
+        return be > af;
     }
 
-    public boolean clearAll() {
-        if (map == null)
-            return false;
-        map.clear();
-        return true;
+    @Override
+    public int size(Context context) {
+        return map.size();
     }
+
+    @Override
+    public long byteSize(Context context) {
+        byte[] bytes = ByteUtils.toByteArray(map);
+        return bytes == null ? 0L : bytes.length;
+    }
+
+
 }

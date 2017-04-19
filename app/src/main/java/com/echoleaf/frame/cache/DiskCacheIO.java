@@ -90,6 +90,58 @@ public class DiskCacheIO<K extends String, V extends Serializable> implements IC
     }
 
     @Override
+    public boolean clear(Context context) {
+        File[] files = context.getCacheDir().listFiles();
+        if (files != null) {
+            int bf = files.length;
+            int af = 0;
+            for (File file : files) {
+                if (file != null && file.exists() && file.delete()) {
+                    af++;
+                }
+            }
+            return bf == af;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean sortOut(Context context) {
+        long be = byteSize(context);
+        File[] files = context.getCacheDir().listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file != null && file.exists()) {
+                    CacheObejct<V> cacheObejct = readCache(file);
+                    if (cacheObejct == null || (cacheObejct.isExpired() || cacheObejct.getShelfLife() < 0)) {
+                        file.delete();
+                    }
+                }
+            }
+        }
+        long af = byteSize(context);
+        return be > af;
+    }
+
+    @Override
+    public boolean sortOut(Context context, long shelfLife) {
+        long be = byteSize(context);
+        File[] files = context.getCacheDir().listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file != null && file.exists()) {
+                    CacheObejct<V> cacheObejct = readCache(file);
+                    if (cacheObejct == null || (shelfLife - DateUtils.millisBetween(cacheObejct.getCacheTime(), new Date()) <= 0)) {
+                        file.delete();
+                    }
+                }
+            }
+        }
+        long af = byteSize(context);
+        return be > af;
+    }
+
+    @Override
     public int size(Context context) {
         return context.getCacheDir().list().length;
     }
@@ -101,6 +153,10 @@ public class DiskCacheIO<K extends String, V extends Serializable> implements IC
 
     private CacheObejct<V> readCache(Context context, K key) {
         File cacheFile = new File(context.getCacheDir(), key);
+        return readCache(cacheFile);
+    }
+
+    private CacheObejct<V> readCache(File cacheFile) {
         if (!cacheFile.exists())
             return null;
         FileInputStream fis = null;
@@ -114,8 +170,7 @@ public class DiskCacheIO<K extends String, V extends Serializable> implements IC
             e.printStackTrace();
             // 反序列化失败 - 删除缓存文件
             if (e instanceof InvalidClassException) {
-                File data = context.getFileStreamPath(key);
-                data.delete();
+                cacheFile.delete();
             }
         } finally {
             try {

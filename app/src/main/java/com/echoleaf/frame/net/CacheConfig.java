@@ -12,9 +12,12 @@ import com.echoleaf.frame.utils.StringUtils;
  */
 
 public class CacheConfig<R> implements Trash {
+
     private ICacheIO<String, String> cacheIO;
 
     private CacheFilter<R> cacheFilter;
+
+    public int maxByteSiez=1024*1024;
 
     public CacheConfig() {
         this(null, null);

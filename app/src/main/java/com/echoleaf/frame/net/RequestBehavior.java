@@ -95,6 +95,9 @@ public abstract class RequestBehavior<T, R> implements Trash {
                     T result = responseFormatter.formate(response);
                     String requestKey = requestParams == null ? "" : requestParams.generateUniqueCode();
                     if (getCacheConfig().getCacheFilter().cache(context, requestParams, response, result, requestKey)) {
+                        if (getCacheIO().byteSize(context) > getCacheConfig().maxByteSiez) {
+                            getCacheIO().sortOut(context);
+                        }
                         getCacheIO().put(context, requestKey, response);
                     }
                     subscriber.onNext(result);
