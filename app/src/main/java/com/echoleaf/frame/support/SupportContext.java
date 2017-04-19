@@ -1,5 +1,6 @@
 package com.echoleaf.frame.support;
 
+import com.echoleaf.frame.recyle.TrashMonitor;
 import com.echoleaf.frame.support.controller.TouchEventController;
 
 /**
@@ -9,4 +10,5 @@ public interface SupportContext {
 
     void addTouchEventController(TouchEventController... controller);
 
+    void addTrash(Object trash, TrashMonitor.On on, int sort);
 }

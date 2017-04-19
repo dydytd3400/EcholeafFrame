@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
+import com.echoleaf.frame.recyle.Trash;
 import com.echoleaf.frame.recyle.TrashCollector;
 import com.echoleaf.frame.recyle.TrashMonitor;
 import com.echoleaf.frame.support.controller.TouchEventController;
@@ -25,6 +26,10 @@ public class SupportFragmentActivity extends android.support.v4.app.FragmentActi
 
     @TrashMonitor
     protected List<TouchEventController> controllers;
+    @TrashMonitor(on = TrashMonitor.On.FINISH)
+    protected List<Trash> onFinishRecycle;
+    @TrashMonitor
+    protected List<Trash> onDestoryRecycle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,5 +91,25 @@ public class SupportFragmentActivity extends android.support.v4.app.FragmentActi
         for (TouchEventController controller : controllers) {
             this.controllers.add(controller);
         }
+    }
+
+    @Override
+    public void addTrash(Object trash, TrashMonitor.On on, int sort) {
+        if (trash == null)
+            return;
+        List tarshes;
+        if (on == TrashMonitor.On.FINISH) {
+            if (this.onFinishRecycle == null)
+                this.onFinishRecycle = new ArrayList<>();
+            tarshes = onFinishRecycle;
+        } else {
+            if (this.onDestoryRecycle == null)
+                this.onDestoryRecycle = new ArrayList<>();
+            tarshes = onDestoryRecycle;
+        }
+        if (sort < 0)
+            tarshes.add(trash);
+        else
+            tarshes.add(sort, trash);
     }
 }

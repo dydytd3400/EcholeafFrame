@@ -1,6 +1,5 @@
 package com.echoleaf.frame.recyle;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,23 +30,17 @@ public class TrashCollector {
         if (target == null)
             return;
         List tarshes = new ArrayList<>();
+
         Field[] fields = target.getClass().getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);
-            Annotation[] annotations = field.getAnnotations();
-            if (annotations != null) {
-                for (Annotation annotation : annotations) {
-                    if (annotation instanceof TrashMonitor) {
-                        TrashMonitor trashMonitor = (TrashMonitor) annotation;
-                        if (on == null || on == TrashMonitor.On.ANYTIME || on == trashMonitor.on()) {
-                            Object trash = getFieldValue(target, field);
-                            if (trashMonitor.sort() < 0)
-                                tarshes.add(trash);
-                            else
-                                tarshes.add(trashMonitor.sort(), trash);
-                        }
-                    }
-                }
+            TrashMonitor trashMonitor = field.getAnnotation(TrashMonitor.class);
+            if (trashMonitor != null && (on == null || on == TrashMonitor.On.ANYTIME || on == trashMonitor.on())) {
+                Object trash = getFieldValue(target, field);
+                if (trashMonitor.sort() < 0)
+                    tarshes.add(trash);
+                else
+                    tarshes.add(trashMonitor.sort(), trash);
             }
         }
 
@@ -64,7 +57,6 @@ public class TrashCollector {
         }
         tarshes.clear();
     }
-
 
     /**
      * 获取当前对象对应字段的属性（对象）
