@@ -8,6 +8,7 @@ import com.echoleaf.frame.cache.CacheObejct;
 import com.echoleaf.frame.cache.ICacheIO;
 import com.echoleaf.frame.recyle.Trash;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,10 +16,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-/**
- * Created by dydyt on 2017/2/21.
- */
 
 public abstract class RequestBehavior<T, R> implements Trash {
     public RequestBehavior() {
@@ -186,19 +183,27 @@ public abstract class RequestBehavior<T, R> implements Trash {
         if (cacheConfig != null)
             cacheConfig.recycle();
         cacheConfig = null;
-
         responseFormatter = null;
     }
 
     private static final int DELAYED_RECYCLE = 1;
-    private Handler timerHander = new Handler() {
+    private Handler timerHander = new TimerHander(this);
+
+    static class TimerHander extends Handler {
+        WeakReference<Trash> weakReference;
+
+        TimerHander(Trash trash) {
+            weakReference = new WeakReference<>(trash);
+        }
+
         public void handleMessage(Message msg) {
             if (msg.what == DELAYED_RECYCLE) {
-                recycle();
+                Trash trash = weakReference.get();
+                if (trash != null)
+                    trash.recycle();
             }
             super.handleMessage(msg);
         }
-    };
-
+    }
 
 }
