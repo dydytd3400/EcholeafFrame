@@ -16,7 +16,7 @@ public @interface TrashMonitor {
     int DISORDERED = -1;
 
     enum On {
-        FINISH, DESTORY
+        FINISH, DESTORY,ANYTIME
     }
 
     On on() default On.DESTORY;

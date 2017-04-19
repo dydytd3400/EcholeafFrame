@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
-import com.echoleaf.frame.recyle.Trash;
 import com.echoleaf.frame.recyle.TrashCollector;
 import com.echoleaf.frame.recyle.TrashMonitor;
 import com.echoleaf.frame.support.controller.TouchEventController;
@@ -24,9 +23,8 @@ public class SupportFragmentActivity extends android.support.v4.app.FragmentActi
 
     protected Activity mContext;
 
+    @TrashMonitor
     protected List<TouchEventController> controllers;
-    protected List<Object> onFinishRecycle;
-    protected List<Object> onDestoryRecycle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,62 +62,21 @@ public class SupportFragmentActivity extends android.support.v4.app.FragmentActi
 
     @Override
     public void finish() {
-        TrashCollector.monitor(this);
-        if (onFinishRecycle != null) {
-            for (Object o : onFinishRecycle) {
-                if (o != null) {
-                    if (o instanceof Trash) {
-                        ((Trash) o).recycle();
-                    }
-                    o = null;
-                }
-            }
-            onFinishRecycle = null;
-        }
+        TrashCollector.recycle(this, TrashMonitor.On.FINISH);
         super.finish();
     }
 
     @Override
     protected void onDestroy() {
-        TrashCollector.monitor(this);
+        TrashCollector.recycle(this, TrashMonitor.On.DESTORY);
         if (controllers != null) {
             controllers.clear();
             controllers = null;
-        }
-        if (onDestoryRecycle != null) {
-            for (Object o : onDestoryRecycle) {
-                if (o != null) {
-                    if (o instanceof Trash) {
-                        ((Trash) o).recycle();
-                    }
-                    o = null;
-                }
-            }
-            onDestoryRecycle = null;
         }
         mContext = null;
         super.onDestroy();
     }
 
-    @Override
-    public void addTrash(Object trash, TrashMonitor.On on, int sort) {
-        if (trash == null)
-            return;
-        List tarshes;
-        if (on == TrashMonitor.On.FINISH) {
-            if (this.onFinishRecycle == null)
-                this.onFinishRecycle = new ArrayList<>();
-            tarshes = onFinishRecycle;
-        } else {
-            if (this.onDestoryRecycle == null)
-                this.onDestoryRecycle = new ArrayList<>();
-            tarshes = onDestoryRecycle;
-        }
-        if (sort < 0)
-            tarshes.add(trash);
-        else
-            tarshes.add(sort, trash);
-    }
 
     public void addTouchEventController(TouchEventController... controllers) {
         if (controllers == null || controllers.length == 0)
@@ -128,7 +85,6 @@ public class SupportFragmentActivity extends android.support.v4.app.FragmentActi
             this.controllers = new ArrayList<>();
         for (TouchEventController controller : controllers) {
             this.controllers.add(controller);
-            addTrash(controller, TrashMonitor.On.DESTORY, TrashMonitor.DISORDERED);
         }
     }
 }

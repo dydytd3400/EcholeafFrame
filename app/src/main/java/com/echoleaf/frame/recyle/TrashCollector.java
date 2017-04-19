@@ -2,27 +2,67 @@ package com.echoleaf.frame.recyle;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Trash采集器，负责将TrashMonitor所检测的Trash对象收集整理并装载至TrashRecycler，交由TrashRecycler对Trash对象进行统一管理和回收
+ * Trash采集器，负责将TrashMonitor所检测的Trash对象收集整理并进行统一管理和回收
  */
 public class TrashCollector {
-    public static void monitor(TrashRecycler recycler) {
-        if (recycler == null)
+
+    /**
+     * 对目标对象成员中所有监视对象进行回收
+     *
+     * @param target
+     */
+    public static void recycle(Object target) {
+        recycle(target, TrashMonitor.On.ANYTIME);
+    }
+
+    /**
+     * 对目标对象成员中符合回收条件TrashMonitor.On的监视对象进行回收
+     *
+     * @param target
+     * @param on
+     */
+    public static void recycle(Object target, TrashMonitor.On on) {
+        if (target == null)
             return;
-        Field[] fields = recycler.getClass().getDeclaredFields();
+        List tarshes = new ArrayList<>();
+        Field[] fields = target.getClass().getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);
             Annotation[] annotations = field.getAnnotations();
             if (annotations != null) {
                 for (Annotation annotation : annotations) {
                     if (annotation instanceof TrashMonitor) {
-                        TrashMonitor trash = (TrashMonitor) annotation;
-                        recycler.addTrash(getFieldValue(recycler, field), trash.on(), trash.sort());
+                        TrashMonitor trashMonitor = (TrashMonitor) annotation;
+                        if (on == null || on == TrashMonitor.On.ANYTIME || on == trashMonitor.on()) {
+                            Object trash = getFieldValue(target, field);
+                            if (trashMonitor.sort() < 0)
+                                tarshes.add(trash);
+                            else
+                                tarshes.add(trashMonitor.sort(), trash);
+                        }
                     }
                 }
             }
         }
+
+        for (Object o : tarshes) {
+            if (o != null) {
+                if (o instanceof Trash) {
+                    ((Trash) o).recycle();
+                } else if (o instanceof Map) {
+                    ((Map) o).clear();
+                } else if (o instanceof Collection) {
+                    ((Collection) o).clear();
+                }
+            }
+        }
+        tarshes.clear();
     }
 
 
@@ -33,7 +73,7 @@ public class TrashCollector {
      * @param parent 当前对象
      * @return Object 当前对象指定属性值
      */
-    public static Object getFieldValue(Object parent, Field field) {
+    private static Object getFieldValue(Object parent, Field field) {
         Object fieldValue = null;
         try {
             field.setAccessible(true);
