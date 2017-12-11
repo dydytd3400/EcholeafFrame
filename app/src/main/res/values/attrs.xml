@@ -90,4 +90,8 @@
         <attr name="selected_color" format="color" />
         <attr name="backcolor" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="SupportEditText">
+        <attr name="emoji_able" format="boolean" />
+    </declare-styleable>
 </resources>

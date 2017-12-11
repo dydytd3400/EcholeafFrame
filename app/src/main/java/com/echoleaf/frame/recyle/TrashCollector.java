@@ -1,5 +1,6 @@
 package com.echoleaf.frame.recyle;
 
+import java.lang.ref.Reference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,6 +53,8 @@ public class TrashCollector {
                     ((Map) o).clear();
                 } else if (o instanceof Collection) {
                     ((Collection) o).clear();
+                } else if (o instanceof Reference) {
+                    ((Reference) o).clear();
                 }
             }
         }
