@@ -10,6 +10,7 @@
 通过基于实现了TrashRecycler的类中成员，对手动添加了注解@TrashMonitor的成员变量进行自动监管，并在对应的条件(onFinish、onDestory等)下主动对变量进行回收。如果注解描述对象实现了Trash接口，则同时会调用其.recyle()方法，进行更胜层次的回收工作。
 ## 更新日志
 ##### 1.0.5
+优化聚合算法
 ##### 1.0.3 
 1.修正RecylerViewAdapter的OnItemClickListener事件与OnItemViewClickListener事件冲突的问题；
 2.增加了WebViewBuider，用于对WebView进行快速化常规配置。
