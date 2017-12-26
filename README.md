@@ -9,6 +9,8 @@
 ## 基础垃圾管理模块
 通过基于实现了TrashRecycler的类中成员，对手动添加了注解@TrashMonitor的成员变量进行自动监管，并在对应的条件(onFinish、onDestory等)下主动对变量进行回收。如果注解描述对象实现了Trash接口，则同时会调用其.recyle()方法，进行更胜层次的回收工作。
 ## 更新日志
+##### 1.0.6
+为WebViewBuilder新增了OnPageFinishedListener监听对象
 ##### 1.0.5
 优化聚合算法
 ##### 1.0.3 

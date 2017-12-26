@@ -9,7 +9,7 @@ import java.util.TimeZone;
 
 /**
  * 日期时间工具类
- * 
+ *
  * @author 何常平
  * @version 1.0
  */
@@ -36,7 +36,7 @@ public class DateUtils {
 
 	/**
 	 * 将秒格式化为中国时间，最大单位为“天”
-	 * 
+	 *
 	 * @param millis 毫秒
 	 * @return 格式化为中文单位的秒时间数
 	 */
@@ -77,7 +77,7 @@ public class DateUtils {
 
 	/**
 	 * 解析日期String并转换为Date
-	 * 
+	 *
 	 * @param date 字符串时间
 	 *        <p>
 	 *        支持大多数常用时间格式，暂不支持yyyyMMddHHmmss、HH:mm:ss、HH:mm a
@@ -110,7 +110,7 @@ public class DateUtils {
 
 	/**
 	 * long型日期转String日期
-	 * 
+	 *
 	 * @param pattern 格式化字符串
 	 * @param milliseconds long型毫秒数
 	 * @return
@@ -124,7 +124,7 @@ public class DateUtils {
 
 	/**
 	 * Date按格式转String
-	 * 
+	 *
 	 * @param pattern 格式化字符串
 	 * @param date Date型时间
 	 * @return
@@ -142,7 +142,7 @@ public class DateUtils {
 
 	/**
 	 * 日期格式转换
-	 * 
+	 *
 	 * @param pattern 字符串时间的格式
 	 * @param outPattern 输出的格式化字符串
 	 * @param dateStr 时间字符串
@@ -164,7 +164,7 @@ public class DateUtils {
 
 	/**
 	 * String转Date
-	 * 
+	 *
 	 * @param pattern 格式化字符串
 	 * @param dateStr 时间字符串
 	 * @return
@@ -181,7 +181,7 @@ public class DateUtils {
 
 	/**
 	 * 获取当前时间
-	 * 
+	 *
 	 * @param format 格式化字符串
 	 * @return
 	 */
@@ -191,7 +191,7 @@ public class DateUtils {
 
 	/**
 	 * 获取当前时间
-	 * 
+	 *
 	 * @return 默认格式为 yyyyMMddHHmmss
 	 */
 	public static Date getCurrentTime() {
@@ -200,7 +200,7 @@ public class DateUtils {
 
 	/**
 	 * 获取星期
-	 * 
+	 *
 	 * @param num 星期数
 	 * @return
 	 */
@@ -222,7 +222,7 @@ public class DateUtils {
 	 * 若相隔不足24小时，但日期上已经过了一天，则按一天计算返回一天。如 2015-05-01 23:59:59和2015-05-02
 	 * 00:00:01之间则相隔一天
 	 * </p>
-	 * 
+	 *
 	 * @since 1.2
 	 * @param date1 通常为较早的一个日期
 	 * @param date2 通常为较晚的一个日期
@@ -249,7 +249,7 @@ public class DateUtils {
 	 * <p>
 	 * 若date1较早，则返回正数，若date2较早，则返回负数
 	 * </p>
-	 * 
+	 *
 	 * @since 1.2
 	 * @param date1 通常为较早的一个日期
 	 * @param date2 通常为较晚的一个日期
@@ -266,7 +266,7 @@ public class DateUtils {
 
 	/**
 	 * 日期单位
-	 * 
+	 *
 	 * @author 何常平
 	 * @version 1.3
 	 */
@@ -287,7 +287,7 @@ public class DateUtils {
 
 	/**
 	 * 日期加法计算
-	 * 
+	 *
 	 * @since 1.3
 	 * @param date 参与计算的日期
 	 * @param value 计算值（负数则为减法）
@@ -304,7 +304,7 @@ public class DateUtils {
 
 	/**
 	 * 日期减法计算
-	 * 
+	 *
 	 * @since 1.3
 	 * @param date 参与计算的日期
 	 * @param value 计算值（负数则为加法）

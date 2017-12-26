@@ -24,6 +24,7 @@ public class WebViewBuilder {
 
     private Activity mActivity;
     private WebView mWebView;
+    private OnPageFinishedListener onPageFinishedListener;
     private OnReceivedTitleListener onReceivedTitleListener;
     private OnLoadUrlListener onLoadUrlListener;
     private OnReceivedSslErrorListener onReceivedSslErrorListener;
@@ -36,6 +37,11 @@ public class WebViewBuilder {
 
     public WebViewBuilder loadUrlListener(@Nullable OnLoadUrlListener onLoadUrlListener) {
         this.onLoadUrlListener = onLoadUrlListener;
+        return this;
+    }
+
+    public WebViewBuilder pageFinishedListener(@Nullable OnPageFinishedListener onPageFinishedListener) {
+        this.onPageFinishedListener = onPageFinishedListener;
         return this;
     }
 
@@ -115,6 +121,15 @@ public class WebViewBuilder {
         // 创建WebViewClient对象
         WebViewClient wvc = new WebViewClient() {
             @Override
+            public void onPageFinished(WebView view, String url) {
+                boolean override = false;
+                if (onPageFinishedListener != null)
+                    override = onPageFinishedListener.onPageFinished(view, url);
+                if (!override)
+                    super.onPageFinished(view, url);
+            }
+
+            @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // 使用自己的WebView组件来响应Url加载事件，而不是使用默认浏览器器加载页面
                 // 消耗掉这个事件。Android中返回True的即到此为止吧,事件就会不会冒泡传递了，我们称之为消耗掉
@@ -139,9 +154,10 @@ public class WebViewBuilder {
                 if (!override)
                     handler.proceed();  // 接受所有网站的证书
             }
+
         };
         mWebView.setWebViewClient(wvc);
-        WebViewJScript webViewJScript = new WebViewJScript(mActivity,mWebView);
+        WebViewJScript webViewJScript = new WebViewJScript(mActivity, mWebView);
         mWebView.addJavascriptInterface(webViewJScript, "EchoLeafAjs");
 
         if (StringUtils.notEmpty(initUrl)) {
@@ -157,6 +173,9 @@ public class WebViewBuilder {
         return new WebViewBuilder(activity, webView);
     }
 
+    public interface OnPageFinishedListener {
+        boolean onPageFinished(WebView view, String url);
+    }
 
     public interface OnReceivedTitleListener {
         boolean onReceivedTitle(WebView view, String title);
