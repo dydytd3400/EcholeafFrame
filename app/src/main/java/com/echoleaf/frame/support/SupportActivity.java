@@ -3,6 +3,7 @@ package com.echoleaf.frame.support;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 
 import com.echoleaf.frame.recyle.Trash;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Created by 何常平 on 2016/8/2.
  */
-public class SupportActivity extends Activity implements SupportContext {
+public class SupportActivity extends AppCompatActivity implements SupportContext {
     protected Activity mContext;
 
     @TrashMonitor
