@@ -22,7 +22,7 @@ public abstract class RecyclerViewAdapter<E> extends RecyclerView.Adapter<Recycl
     private OnItemClickListener<E> onItemClickListener;
     private OnItemViewClickListener<E> onItemViewClickListener;
     @TrashMonitor
-    private ArrayList<E> dataList = new ArrayList<>();
+    protected ArrayList<E> dataList = new ArrayList<>();
     protected List<Integer> mOnItemClickWacthViewIds;
 
     public RecyclerViewAdapter(int layoutResId) {
