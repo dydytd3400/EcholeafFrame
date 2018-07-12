@@ -45,6 +45,42 @@ public abstract class RecyclerViewAdapter<E> extends RecyclerView.Adapter<Recycl
         }
     }
 
+    public void removeItems(Collection<E> list) {
+        int len = this.dataList.size();
+        if (list != null && list.size() > 0) {
+            this.dataList.removeAll(list);
+            this.notifyItemRangeRemoved(len, list.size());
+        }
+    }
+
+    public void addItem(E item) {
+        dataList.add(item);
+        notifyItemInserted(dataList.size() - 1);
+    }
+
+    public void addItem(int position, E item) {
+        dataList.add(position, item);
+        notifyItemInserted(position);
+    }
+
+    public void removeItem(E item) {
+        int i = indexOf(item);
+        if (i < 0)
+            return;
+        if (dataList.remove(item))
+            notifyItemRemoved(i);
+    }
+
+
+    public void removeItem(int position) {
+        dataList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public ArrayList<E> datas() {
+        return dataList;
+    }
+
     @Override
     public RecyclerViewHolder<E> onCreateViewHolder(ViewGroup parent, int viewType) {
         return createViewHolder(LayoutInflater.from(parent.getContext()).inflate(layoutResId, parent, false));
@@ -54,12 +90,14 @@ public abstract class RecyclerViewAdapter<E> extends RecyclerView.Adapter<Recycl
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder<E> holder, final int position) {
-        holder.renderView(dataList.get(position), position);
+        final E itemData = dataList.get(position);
+        holder.renderView(itemData, position);
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onItemViewClickListener != null)
-                    onItemViewClickListener.onItemViewClick(v, dataList.get(position), position);
+                int position = indexOf(itemData);
+                if (onItemViewClickListener != null && position >= 0)
+                    onItemViewClickListener.onItemViewClick(v, itemData, position);
             }
         };
         View rootView = holder.getRootView();
@@ -72,10 +110,18 @@ public abstract class RecyclerViewAdapter<E> extends RecyclerView.Adapter<Recycl
         rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onItemClickListener != null)
-                    onItemClickListener.onItemClick(v, dataList.get(position), position);
+                int position = indexOf(itemData);
+                if (onItemClickListener != null && position >= 0)
+                    onItemClickListener.onItemClick(v, itemData, position);
             }
         });
+    }
+
+    protected int indexOf(E o) {
+        for (int i = 0; i < dataList.size(); i++)
+            if (o == dataList.get(i))
+                return i;
+        return -1;
     }
 
     private void addOnItemClickWacthView(int id) {
@@ -115,4 +161,6 @@ public abstract class RecyclerViewAdapter<E> extends RecyclerView.Adapter<Recycl
         onItemClickListener = null;
         TrashCollector.recycle(this);
     }
+
+
 }
