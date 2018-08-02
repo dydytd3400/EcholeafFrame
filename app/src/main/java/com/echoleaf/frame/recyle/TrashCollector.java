@@ -50,19 +50,49 @@ public class TrashCollector {
         }
 
         for (Object o : tarshes) {
-            if (o != null) {
-                if (o instanceof Trash) {
-                    ((Trash) o).recycle();
-                } else if (o instanceof Map) {
-                    ((Map) o).clear();
-                } else if (o instanceof Collection) {
-                    ((Collection) o).clear();
-                } else if (o instanceof Reference) {
-                    ((Reference) o).clear();
-                }
-            }
+            recycleUnknown(o);
         }
         tarshes.clear();
+    }
+
+    private static void recycleUnknown(Object o) {
+        if (o != null)
+            if (o instanceof Trash) {
+                ((Trash) o).recycle();
+            } else if (o instanceof Map) {
+                recycle((Map) o);
+            } else if (o instanceof Collection) {
+                recycle((Collection) o);
+            } else if (o instanceof Reference) {
+                recycle((Reference) o);
+            }
+    }
+
+    private static void recycle(Collection collection) {
+        if (collection == null)
+            return;
+        for (Object o : collection) {
+            recycleUnknown(o);
+        }
+        collection.clear();
+    }
+
+    private static void recycle(Map map) {
+        if (map == null)
+            return;
+        for (Object o : map.values()) {
+            recycleUnknown(o);
+        }
+        map.clear();
+    }
+
+    private static void recycle(Reference reference) {
+        if (reference == null)
+            return;
+        if (reference instanceof Trash) {
+            ((Trash) reference).recycle();
+        }
+        reference.clear();
     }
 
     /**
