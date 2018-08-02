@@ -1,7 +1,10 @@
 package com.echoleaf.frame.utils;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 数组集合工具类
@@ -91,7 +94,7 @@ public class CollectionUtils {
      * @return
      */
     public static int indexOf(Object element, Collection<?> objs) {
-        return indexOf(element, objs.toArray());
+        return new ArrayList(objs).indexOf(element);
     }
 
     /**
@@ -102,15 +105,7 @@ public class CollectionUtils {
      * @return
      */
     public static int indexOf(Object element, Object[] objs) {
-        if (objs != null) {
-            for (int i = 0; i < objs.length; i++) {
-                Object candidate = objs[i];
-                if (candidate == element || candidate.equals(element)) {
-                    return i;
-                }
-            }
-        }
-        return -1;
+        return Arrays.asList(objs).indexOf(element);
     }
 
     /**
@@ -135,16 +130,16 @@ public class CollectionUtils {
     /**
      * Append the given object to the given array, returning a new array
      * consisting of the input array contents plus the given object.
+     *
      * @param array the array to append to (can be {@code null})
-     * @param obj the object to append
+     * @param obj   the object to append
      * @return the new array (of the same component type; never {@code null})
      */
     public static <A, O extends A> A[] addObjectToArray(A[] array, O obj) {
         Class<?> compType = Object.class;
         if (array != null) {
             compType = array.getClass().getComponentType();
-        }
-        else if (obj != null) {
+        } else if (obj != null) {
             compType = obj.getClass();
         }
         int newArrLength = (array != null ? array.length + 1 : 1);
