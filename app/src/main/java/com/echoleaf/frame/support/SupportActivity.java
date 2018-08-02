@@ -23,11 +23,11 @@ public class SupportActivity extends AppCompatActivity implements SupportContext
     protected Activity mContext;
 
     @TrashMonitor
-    protected List<TouchEventController> controllers;
+    public List<TouchEventController> controllers;
     @TrashMonitor(on = TrashMonitor.On.FINISH)
-    protected List<Trash> onFinishRecycle;
+    public List<Trash> onFinishRecycle;
     @TrashMonitor
-    protected List<Trash> onDestoryRecycle;
+    public List<Trash> onDestoryRecycle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
