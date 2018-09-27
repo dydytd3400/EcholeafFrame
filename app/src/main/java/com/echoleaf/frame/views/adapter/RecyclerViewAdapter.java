@@ -103,7 +103,9 @@ public abstract class RecyclerViewAdapter<E> extends RecyclerView.Adapter<Recycl
         View rootView = holder.getRootView();
         if (mOnItemClickWacthViewIds != null && mOnItemClickWacthViewIds.size() > 0) {
             for (int viewId : mOnItemClickWacthViewIds) {
-                rootView.findViewById(viewId).setOnClickListener(onClickListener);
+                View viewById = rootView.findViewById(viewId);
+                if (viewById != null)
+                    viewById.setOnClickListener(onClickListener);
             }
         }
 
