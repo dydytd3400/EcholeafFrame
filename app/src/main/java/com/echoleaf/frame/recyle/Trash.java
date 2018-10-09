@@ -5,7 +5,7 @@ package com.echoleaf.frame.recyle;
  */
 public interface Trash {
     /**
-     * 回收接口
+     * 回收接口.
      */
     void recycle();
 }
